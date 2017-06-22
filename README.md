@@ -8,10 +8,12 @@ Help to filter with params
 dowload the file lib/mongoid_filters.rb put in you initializer folder
 
 ### include in you models 
-class Item
-  import Mongoid::Document
-  import Mongoid::Filters
-end
+```ruby
+  class Item
+    import Mongoid::Document
+    import Mongoid::Filters
+  end
+```
 
 ```html
 <div class="custom-filters">
@@ -43,12 +45,12 @@ filters = QueryToFilterQuery.run(params[:item])
   # { :price.in: "100" }
 ```
 ## Explain
-When you filter you don't need fill all fields and the problem with this it's the form send a empty string
+When you filter you don't need fill all fields and the problem with this it's the form send a empty string.
+you need to sanitize the params delete the empty string and change price lower than to price.lte => 100
 ```ruby
  params[:item]
  # {price__gte: "", price__lte: "100"}
 ```
-you need to sanitize the params delete the empty string and change price lower than to price.lte => 100
 
 ## Custumize
 
@@ -65,6 +67,7 @@ Add you new postfix value to the custom filter operators
 Override the method set_custom_filters with yours custom method, you need to return the new key and the new value in array format
 ``` ruby
   def set_custom_filters(key, value, operator)
+    # key is setter without the operator
     if operator == "regexp" && !empty_value?(value)
       value = /#{build_regexp(value)}/i
     end
@@ -72,14 +75,10 @@ Override the method set_custom_filters with yours custom method, you need to ret
   end
 ```
 
-and use then
-
 ```ruby
   { name__regexp: "car" }.to_filter_query
-  # { name__regexp: /car/i }
+  # { name: /car/i }
 ```
-
-seed 
 
 
  
