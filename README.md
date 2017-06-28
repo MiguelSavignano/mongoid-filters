@@ -1,13 +1,12 @@
-# Moingoid::Filters
+# Mongoid::Filters
 
 Help to filter with params
 
-
 ## Usage
-#### install
+### install
 dowload the file lib/mongoid_filters.rb put in you initializer folder
 
-### include in you models 
+#### include in you models 
 ```ruby
   class Item
     import Mongoid::Document
@@ -24,9 +23,9 @@ dowload the file lib/mongoid_filters.rb put in you initializer folder
 ```ruby
 # controller
 @items = Item.filter(params[:item])
-or use
-filters = QueryToFilterQuery.run(params[:item])
-@item = Item.where(filters)
+# or use
+filters = params[:item])
+@item = Item.where(filters.to_filter_query)
 ```
 
 ## filter
@@ -52,11 +51,18 @@ you need to sanitize the params delete the empty string and change price lower t
  # {price__gte: "", price__lte: "100"}
 ```
 
-## Custumize
+## Customize
 
-#### seed the example of regexp
+# default mongoid operators
+``` ruby
+  def mongoid_filter_operators
+    %W[ gte lte in with_size nin ]
+  end
+```
 
-Add you new postfix value to the custom filter operators
+#### See the example of regexp
+
+Add a new postfix value to the custom filter operators
 
 ```ruby
   def custom_filter_operators
