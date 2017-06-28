@@ -53,14 +53,14 @@ you need to sanitize the params delete the empty string and change price lower t
 
 ## Customize
 
-# default mongoid operators
+### default mongoid operators
 ``` ruby
   def mongoid_filter_operators
     %W[ gte lte in with_size nin ]
   end
 ```
 
-#### See the example of regexp
+#### Add custom operator
 
 Add a new postfix value to the custom filter operators
 
