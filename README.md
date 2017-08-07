@@ -16,39 +16,42 @@ dowload the file lib/mongoid_filters.rb put in you initializer folder
 
 ```html
 <div class="custom-filters">
-  <input type="number" name="item[price__gte]" placeholder="price grhather than"/>
-  <input type="number" name="item[price__lte]" placeholder="price lower than"/>
+  <input type="number" name="item[price__gte]" placeholder="price grhather than" />
+  <input type="number" name="item[price__lte]" placeholder="price lower than" />
 </div>
 ```
 ```ruby
 # controller
 @items = Item.filter(params[:item])
 # or use
-filters = params[:item])
-@item = Item.where(filters.to_filter_query)
+query = params[:item].to_filter_query
+@item = Item.where(query)
 ```
 
 ## filter
 ```ruby
   Item.filter({ price__gte: "", price__lte: "100" })
 ```
+
 ## to_filter_query
 ```ruby
   { price__gte: "", price__lte: "100" }.to_filter_query
-  # { :price.in: "100" }
+  # {price__gte: "", price__lte: "100"}
 ```
 
 ## run
 ```ruby
   QueryToFilterQuery.run({ price__gte: "", price__lte: "100" })
-  # { :price.in: "100" }
+  # { price__gte: "", price__lte: "100" }
 ```
 ## Explain
 When you filter you don't need fill all fields and the problem with this it's the form send a empty string.
 you need to sanitize the params delete the empty string and change price lower than to price.lte => 100
 ```ruby
  params[:item]
- # {price__gte: "", price__lte: "100"}
+ # { price__gte: "", price__lte: "100" }
+ query = {}
+ query[price.gte] = params[:price__gte] if params[:price].present?
 ```
 
 ## Customize
